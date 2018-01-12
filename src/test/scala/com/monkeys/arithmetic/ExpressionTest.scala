@@ -12,4 +12,8 @@ class ExpressionTest extends FlatSpec with Matchers {
     Expression(BigDecimal(2.2)).asResult() should equal(BigDecimal(2.2))
     Expression(BigDecimal(-1.242)).asResult() should equal(BigDecimal(-1.242))
   }
+
+  "An expression with left and right operands and an \"ADD\" operator" should "transform into a result that is the sum of both operands" in {
+    Expression(Expression(2), Expression(3), "ADD").asResult() should equal(BigDecimal(5))
+  }
 }
