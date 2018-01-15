@@ -30,4 +30,9 @@ class ExpressionWalkerTest extends AsyncFlatSpec with Matchers {
     ExpressionWalker(Expression(-2, 4, "DIV")).result map { result => result should equal(-0.5) }
     ExpressionWalker(Expression(-2, -1, "DIV")).result map { result => result should equal(2) }
   }
+
+  "Expression Walker (composed expressions)" should "transform a simple equation with two operations into a result" in {
+    val subExpression = Expression(2, 5, "ADD")
+    ExpressionWalker(Expression(2, subExpression, "ADD")).result map { result => result should equal(9) }
+  }
 }
