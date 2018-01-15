@@ -19,6 +19,7 @@ case class ExpressionWalker(expression: Expression) {
       expression.operator match {
         case Some(op) if "SUB".equals(op) => leftOperand - rightOperand
         case Some(op) if "MUL".equals(op) => leftOperand * rightOperand
+        case Some(op) if "DIV".equals(op) => leftOperand / rightOperand
         case _ => leftOperand + rightOperand
       }
     }

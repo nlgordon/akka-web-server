@@ -23,4 +23,11 @@ class ExpressionWalkerTest extends AsyncFlatSpec with Matchers {
     ExpressionWalker(Expression(-2, 4, "MUL")).result map { result => result should equal(-8) }
     ExpressionWalker(Expression(-2, -1, "MUL")).result map { result => result should equal(2) }
   }
+
+  it should "transform the division of two constant operands into a result" in {
+    ExpressionWalker(Expression(2, 2, "DIV")).result map { result => result should equal(1) }
+    ExpressionWalker(Expression(2, 1, "DIV")).result map { result => result should equal(2) }
+    ExpressionWalker(Expression(-2, 4, "DIV")).result map { result => result should equal(-0.5) }
+    ExpressionWalker(Expression(-2, -1, "DIV")).result map { result => result should equal(2) }
+  }
 }
