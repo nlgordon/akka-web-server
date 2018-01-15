@@ -1,32 +1,11 @@
 package com.monkeys.arithmetic
 
-case class Expression(left: Option[Expression] = None, right: Option[Expression] = None, operator: Option[String] = None, constant: Option[BigDecimal] = None) {
-  def asResult(): BigDecimal = {
-    val leftResult = left match {
-      case Some(number) => number.asResult()
-      case _ => BigDecimal(0)
-    }
-
-    val rightResult = right match {
-      case Some(number) => number.asResult()
-      case _ => BigDecimal(0)
-    }
-
-    val constResult = constant match {
-      case Some(number) => number
-      case _ => BigDecimal(0)
-    }
-
-    leftResult + rightResult + constResult
-  }
+case class Expression(left: Option[Expression] = None, right: Option[Expression] = None, operator: Option[String] = None, constant: Option[BigDecimal] = Some(0)) {
+  def isConstantOnly = left.isEmpty && right.isEmpty
 }
 
 object Expression {
   def apply() = new Expression()
 
-  def apply(leftOperand: Expression, rightOperand: Expression, op: String) = new Expression(Some(leftOperand), Some(rightOperand), Some(op))
-
-  def apply(constant: BigDecimal) = new Expression(None, None, None, Some(constant))
-
-  def apply(left: Option[Expression], right: Option[Expression], operator: Option[String], constant: Option[BigDecimal]) = new Expression(left, right, operator, constant)
+  def apply(leftOperand: BigDecimal, rightOperand: BigDecimal, op: String) = new Expression(Some(new Expression(constant = Some(leftOperand))), Some(new Expression(constant = Some(rightOperand))), Some(op), None)
 }
