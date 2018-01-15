@@ -16,4 +16,11 @@ class ExpressionWalkerTest extends AsyncFlatSpec with Matchers {
     ExpressionWalker(Expression(-2, 1, "SUB")).result map { result => result should equal(-3) }
     ExpressionWalker(Expression(-2, -1, "SUB")).result map { result => result should equal(-1) }
   }
+
+  it should "transform the multiplication of two constant operands into a result" in {
+    ExpressionWalker(Expression(2, 2, "MUL")).result map { result => result should equal(4) }
+    ExpressionWalker(Expression(2, 1, "MUL")).result map { result => result should equal(2) }
+    ExpressionWalker(Expression(-2, 4, "MUL")).result map { result => result should equal(-8) }
+    ExpressionWalker(Expression(-2, -1, "MUL")).result map { result => result should equal(2) }
+  }
 }
