@@ -35,4 +35,9 @@ class ExpressionWalkerTest extends AsyncFlatSpec with Matchers {
     val subExpression = Expression(2, 5, "ADD")
     ExpressionWalker(Expression(2, subExpression, "ADD")).result map { result => result should equal(9) }
   }
+
+  it should "transform a simple question with two operators into a result (left side grouped)" in {
+    val subExpression = Expression(2, 10, "ADD")
+    ExpressionWalker(Expression(subExpression, 2, "ADD")).result map { result => result should equal(14) }
+  }
 }

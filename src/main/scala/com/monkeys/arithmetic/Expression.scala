@@ -9,5 +9,9 @@ object Expression {
 
   def apply(leftOperand: BigDecimal, rightOperand: BigDecimal, op: String) = new Expression(Some(new Expression(constant = Some(leftOperand))), Some(new Expression(constant = Some(rightOperand))), Some(op))
 
-  def apply(leftOperand: BigDecimal, rightOperand: Expression, op: String) = new Expression(Some(new Expression(constant = Some(leftOperand))), Some(rightOperand), Some(op))
+  def apply(leftOperand: BigDecimal, rightOperand: Expression, op: String) =
+    new Expression(left = Some(new Expression(constant = Some(leftOperand))), right = Some(rightOperand), operator = Some(op))
+
+  def apply(leftOperand: Expression, rightOperand: BigDecimal, op: String) =
+    new Expression(right = Some(new Expression(constant = Some(rightOperand))), left = Some(leftOperand), operator = Some(op))
 }

@@ -21,6 +21,7 @@ private object ExpressionWalkerHelper {
   def base(expr: Expression): BigDecimal = {
     val leftOperand: BigDecimal = expr.left match {
       case Some(leftNumber) if leftNumber.isConstantOnly => leftNumber.constant.get
+      case Some(_) if expr.left.isDefined => base(expr.left.get)
       case _ => 0.0
     }
 
