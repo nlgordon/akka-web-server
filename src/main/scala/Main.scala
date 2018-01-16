@@ -1,26 +1,19 @@
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 import akka.stream.ActorMaterializer
-import akka.http.scaladsl.server.Directives._
+
+import scala.concurrent.ExecutionContextExecutor
 
 object Main {
   def main(args: Array[String]) {
-    implicit val system = ActorSystem("hot-dog")
-    implicit val materializer = ActorMaterializer()
-    implicit val executionContext = system.dispatcher
-
-    val route = path("hello") {
-      get {
-        complete(HttpEntity(ContentTypes.`application/json`, "{\"name\": \"bob\"}"))
-      }
-    }
+    implicit val system: ActorSystem = ActorSystem("hot-dog")
+    implicit val materializer: ActorMaterializer = ActorMaterializer()
+    implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
     val port = 9110
 
-    Http().bindAndHandle(route, "localhost", port)
+    Http().bindAndHandle(Routing.routes, "localhost", port)
 
-    println(s"Started server on port $port.\n\n")
-
+    println(s"Started server on port $port.\n\nHit ctrl-C to stop.")
   }
 }
