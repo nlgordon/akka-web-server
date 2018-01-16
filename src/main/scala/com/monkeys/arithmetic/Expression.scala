@@ -1,6 +1,15 @@
 package com.monkeys.arithmetic
 
-case class Expression(left: Option[Expression] = None, right: Option[Expression] = None, operator: Option[String] = None, constant: Option[BigDecimal] = Some(0)) {
+abstract class Expr
+
+case class NullExpression() extends Expr {}
+
+case class Constant() extends Expr {}
+
+case class Expression(left: Option[Expression] = None,
+                      right: Option[Expression] = None,
+                      operator: Option[String] = None,
+                      constant: Option[BigDecimal] = Some(0)) extends Expr{
   def isConstantOnly = left.isEmpty && right.isEmpty
 }
 
