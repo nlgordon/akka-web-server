@@ -5,7 +5,7 @@ import com.monkeys.arithmetic.ExpressionWalkerHelper.base
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-case class ExpressionWalker(expression: Expression) {
+case class ExpressionWalker(expression: BaseExpression) {
   def result: Future[BigDecimal] = {
     Future {
       base(expression)
@@ -14,20 +14,28 @@ case class ExpressionWalker(expression: Expression) {
 }
 
 object ExpressionWalker {
-  def apply(expression: Expression) = new ExpressionWalker(expression)
+  def apply(expression: BaseExpression) = new ExpressionWalker(expression)
 }
 
 private object ExpressionWalkerHelper {
+  def base(expr: BaseExpression): BigDecimal = {
+    expr match {
+      case Constant(constant) => constant
+      case expression: Expression => base(expression)
+      case _ => 0.0
+    }
+  }
+
   def base(expr: Expression): BigDecimal = {
     val leftOperand: BigDecimal = expr.left match {
-      case Some(leftNumber) if leftNumber.isConstantOnly => leftNumber.constant.get
-      case Some(_) if expr.left.isDefined => base(expr.left.get)
+      case Some(expression: Expression) if expr.left.isDefined => base(expression)
+      case Some(expression: BaseExpression) => base(expression)
       case _ => 0.0
     }
 
     val rightOperand: BigDecimal = expr.right match {
-      case Some(rightNumber) if rightNumber.isConstantOnly => rightNumber.constant.get
-      case Some(_) if expr.right.isDefined => base(expr.right.get)
+      case Some(expression: Expression) if expr.right.isDefined => base(expression)
+      case Some(expression: BaseExpression) => base(expression)
       case _ => 0.0
     }
 

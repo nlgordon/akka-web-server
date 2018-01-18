@@ -1,17 +1,24 @@
 package com.monkeys.arithmetic
 
-case class Expression(left: Option[Expression] = None, right: Option[Expression] = None, operator: Option[String] = None, constant: Option[BigDecimal] = Some(0)) {
-  def isConstantOnly = left.isEmpty && right.isEmpty
+abstract class BaseExpression
+
+case class Expression(left: Option[BaseExpression] = None,
+                      right: Option[BaseExpression] = None,
+                      operator: Option[String] = None) extends BaseExpression {
 }
+
+case class Constant(constant: BigDecimal) extends BaseExpression
 
 object Expression {
   def apply() = new Expression()
 
-  def apply(leftOperand: BigDecimal, rightOperand: BigDecimal, op: String) = new Expression(Some(new Expression(constant = Some(leftOperand))), Some(new Expression(constant = Some(rightOperand))), Some(op))
+  def apply(leftOperand: BigDecimal, rightOperand: BigDecimal, op: String) =
+    new Expression(left = Some(Constant(leftOperand)), right = Some(Constant(rightOperand)), Some(op))
 
   def apply(leftOperand: BigDecimal, rightOperand: Expression, op: String) =
-    new Expression(left = Some(new Expression(constant = Some(leftOperand))), right = Some(rightOperand), operator = Some(op))
+    new Expression(left = Some(Constant(leftOperand)), right = Some(rightOperand), operator = Some(op))
 
   def apply(leftOperand: Expression, rightOperand: BigDecimal, op: String) =
-    new Expression(right = Some(new Expression(constant = Some(rightOperand))), left = Some(leftOperand), operator = Some(op))
+    new Expression(right = Some(Constant(rightOperand)), left = Some(leftOperand), operator = Some(op))
 }
+
