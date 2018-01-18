@@ -22,7 +22,6 @@ private object ExpressionWalkerHelper {
     expr match {
       case Constant(constant) => constant
       case expression: Expression => base(expression)
-      case _ => 0.0
     }
   }
 
