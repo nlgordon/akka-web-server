@@ -27,17 +27,9 @@ private object ExpressionWalkerHelper {
   }
 
   def base(expr: Expression): BigDecimal = {
-    val leftOperand: BigDecimal = expr.left match {
-      case expression: Expression => base(expression)
-      case expression: BaseExpression => base(expression)
-      case _ => 0.0
-    }
+    val leftOperand: BigDecimal = base(expr.left)
 
-    val rightOperand: BigDecimal = expr.right match {
-      case expression: Expression => base(expression)
-      case expression: BaseExpression => base(expression)
-      case _ => 0.0
-    }
+    val rightOperand: BigDecimal = base(expr.right)
 
     expr.operator match {
       case op if "SUB".equals(op) => leftOperand - rightOperand
